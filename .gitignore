@@ -1,0 +1,14 @@
+*.egg
+*.egg-info/
+*.junit
+*.py[cod]
+*.sw?
+.coverage
+.coverage.*
+.DS_Store/
+.eggs/
+.idea/
+.pytest_cache/
+.tox/
+.xprocess/
+/build/
