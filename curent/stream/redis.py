@@ -20,13 +20,14 @@ from curent.stream import (
     StreamSubscriber,
 )
 
+from curent.stream.helper import asynchronize
+
 @attr.s(frozen=True, slots=True)
 class RedisPublisher(StreamPublisher):
     """Redis publisher."""
 
     _producer = attr.ib()
 
-    @asynchronize
     def send(self, msg):
         """Produce a message on the Redis producer.
         """
@@ -45,7 +46,6 @@ class RedisSubscriber(StreamSubscriber):
 
     _consumer = attr.ib()
 
-    @asynchronize
     def receive(self, timeout=2):
         """Poll for the next available message on the Redis consumer."""
         while True:

@@ -21,8 +21,8 @@ from curent.stream import (
     StreamPublisher,
     StreamSubscriber,
 )
-from curent.stream.async import asynchronize
 
+from curent.stream.helper import asynchronize
 
 @attr.s(frozen=True, slots=True)
 class KafkaPublisher(StreamPublisher):
