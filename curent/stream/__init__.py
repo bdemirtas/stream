@@ -6,8 +6,7 @@ from pkg_resources import iter_entry_points
 
 import attr
 
-from curent.stream.async import Asynchronizable
-
+from curent.stream.helper import Asynchronizable
 
 class StreamError(Exception):
     """Raised when a stream error occurs."""
