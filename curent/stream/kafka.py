@@ -13,7 +13,7 @@ from confluent_kafka import (
     Producer,
 )
 
-from burak.stream import (
+from curent.stream import (
     Stream,
     StreamEmpty,
     StreamError,
@@ -21,7 +21,7 @@ from burak.stream import (
     StreamPublisher,
     StreamSubscriber,
 )
-from burak.stream.async import asynchronize
+from curent.stream.async import asynchronize
 
 
 @attr.s(frozen=True, slots=True)
@@ -122,4 +122,3 @@ class KafkaStream(Stream):
         })
         consumer.subscribe(topics)
         return KafkaSubscriber(self.loop, topics, consumer)
-

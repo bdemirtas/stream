@@ -6,12 +6,7 @@ from pkg_resources import iter_entry_points
 
 import attr
 
-from burak.stream.async import Asynchronizable
-
-
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
+from curent.stream.async import Asynchronizable
 
 
 class StreamError(Exception):
@@ -113,5 +108,5 @@ class Stream(ABC):
 def get_stream_factories():
     """Get stream factories indexed by name from the entry points."""
     return {
-        entry_point.name: entry_point.load(require=False) for entry_point in iter_entry_points('imagia.stream')
+        entry_point.name: entry_point.load(require=False) for entry_point in iter_entry_points('curent.stream')
     }

@@ -6,23 +6,19 @@ Uses Redis Python client.
 import logging
 
 import attr
-
 import redis
 from redis.exceptions import (
     ConnectionError,
     TimeoutError,
 )
 
-from burak.stream import (
+from curent.stream import (
     Stream,
-    StreamEmpty,
     StreamError,
     StreamMessage,
     StreamPublisher,
     StreamSubscriber,
 )
-from burak.stream.async import asynchronize
-
 
 @attr.s(frozen=True, slots=True)
 class RedisPublisher(StreamPublisher):
@@ -90,4 +86,3 @@ class RedisStream(Stream):
         pubsub = redis.StrictRedis(self.target).pubsub()
         pubsub.subscribe(topics)
         return RedisSubscriber(self.loop, topics, pubsub)
-
