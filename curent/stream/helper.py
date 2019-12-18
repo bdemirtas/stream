@@ -9,9 +9,9 @@ from functools import wraps
 
 def asynchronize(sync_func):
     """Decorate a function to be asynchronous when it is asynchronizable."""
+
     async def async_func(self, *args, **kwargs):
-        return await self.loop.run_in_executor(
-            None, sync_func, self, *args, **kwargs)
+        return await self.loop.run_in_executor(None, sync_func, self, *args, **kwargs)
 
     @wraps(sync_func)
     def wrapper(self, *args, **kwargs):

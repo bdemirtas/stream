@@ -1,12 +1,20 @@
 from abc import (
-    abstractmethod,
     ABC,
+    abstractmethod,
 )
-from pkg_resources import iter_entry_points
 
 import attr
 
 from curent.stream.helper import Asynchronizable
+
+from pkg_resources import iter_entry_points
+
+from ._version import get_versions
+
+
+__version__ = get_versions()["version"]
+del get_versions
+
 
 class StreamError(Exception):
     """Raised when a stream error occurs."""
@@ -90,8 +98,8 @@ class Stream(ABC):
             factory = factories[name]
         except KeyError:
             raise StreamNotFound(
-                "Stream name {!r} not found in {}".format(
-                    name, list(factories)))
+                "Stream name {!r} not found in {}".format(name, list(factories))
+            )
 
         return factory(target, loop)
 
@@ -107,5 +115,6 @@ class Stream(ABC):
 def get_stream_factories():
     """Get stream factories indexed by name from the entry points."""
     return {
-        entry_point.name: entry_point.load(require=False) for entry_point in iter_entry_points('curent.stream')
+        entry_point.name: entry_point.load(require=False)
+        for entry_point in iter_entry_points("curent.stream")
     }

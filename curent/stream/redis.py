@@ -6,11 +6,9 @@ Uses Redis Python client.
 import logging
 
 import attr
+
 import redis
-from redis.exceptions import (
-    ConnectionError,
-    TimeoutError,
-)
+
 
 from curent.stream import (
     Stream,
@@ -19,8 +17,13 @@ from curent.stream import (
     StreamPublisher,
     StreamSubscriber,
 )
+from redis.exceptions import (
+    ConnectionError,
+    TimeoutError,
+)
 
 from curent.stream.helper import asynchronize
+
 
 @attr.s(frozen=True, slots=True)
 class RedisPublisher(StreamPublisher):
@@ -31,9 +34,9 @@ class RedisPublisher(StreamPublisher):
     def send(self, msg):
         """Produce a message on the Redis producer.
         """
-        logging.debug("Producing message on Redis producer to %(topic)s", {
-            'topic': msg.topic,
-        })
+        logging.debug(
+            "Producing message on Redis producer to %(topic)s", {"topic": msg.topic,}
+        )
         try:
             self._producer.publish(msg.topic, msg.payload)
         except (ConnectionError, TimeoutError) as error:
@@ -49,14 +52,13 @@ class RedisSubscriber(StreamSubscriber):
     def receive(self, timeout=2):
         """Poll for the next available message on the Redis consumer."""
         while True:
-            logging.debug("Polling Redis consumer for %(timeout)d ms", {
-                'timeout': timeout,
-            })
+            logging.debug(
+                "Polling Redis consumer for %(timeout)d ms", {"timeout": timeout,}
+            )
             response = self._consumer.get_message(timeout=timeout)
             if response:
                 return StreamMessage(
-                    topic=response['channel'],
-                    payload=response['data']
+                    topic=response["channel"], payload=response["data"]
                 )
 
     def close(self):
@@ -70,19 +72,13 @@ class RedisStream(Stream):
 
     def publish(self):
         """Publish to a Redis producer."""
-        logging.info("Producing to Redis at %(target)s", {
-            'target': self.target,
-        })
+        logging.info("Producing to Redis at %(target)s", {"target": self.target,})
         return RedisPublisher(self.loop, redis.StrictRedis(self.target))
 
     def subscribe(self, topics):
         """Subscribe to topics on a Redis consumer."""
-        logging.info("Consuming from Redis at %(target)s", {
-            'target': self.target,
-        })
-        logging.info("Subscribing Redis consumer to %(topics)s", {
-            'topics': topics,
-        })
+        logging.info("Consuming from Redis at %(target)s", {"target": self.target,})
+        logging.info("Subscribing Redis consumer to %(topics)s", {"topics": topics,})
         pubsub = redis.StrictRedis(self.target).pubsub()
         pubsub.subscribe(topics)
         return RedisSubscriber(self.loop, topics, pubsub)

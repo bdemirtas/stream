@@ -1,0 +1,2 @@
+include versioneer.py
+include curent/stream/_version.py
